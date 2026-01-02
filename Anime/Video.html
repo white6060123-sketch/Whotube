@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhoNo Video Portal</title>
+    <style>
+        /* --- INTERNAL CSS --- */
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: #0f0f0f;
+            color: white;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background-color: #202020;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        /* Search Bar Styles */
+        .search-container {
+            flex-grow: 1;
+            max-width: 600px;
+            display: flex;
+        }
+
+        #searchBar {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #121212;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        #searchBar:focus {
+            border-color: #444;
+        }
+
+        #openModalBtn {
+            background-color: lightgreen;
+            color: #0f0f0f;
+            border: none;
+            padding: 8px 18px;
+            font-weight: bold;
+            border-radius: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        /* Main Video Area */
+        .main-container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .video-card {
+            background: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            display: block; /* Ensures they show by default */
+        }
+
+        video {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: black;
+        }
+
+        .video-info {
+            padding: 12px;
+        }
+
+        /* Popup Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            background-color: #282828;
+            margin: 10% auto;
+            padding: 25px;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #444;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        /* Form styling inside Modal */
+        .modal-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #121212;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+            color: #ccc;
+        }
+
+        .upload-confirm-btn {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .home h1 a{
+          position:fixed;
+          bottom:50px;
+          right:20px;
+          width:60px;
+          height: 60px;
+          font-size: 20px;
+          display:flex;
+          align-items:center;
+          justify-content: center;
+          text-decoration: none;
+          background-color: #95ef95;border-radius: 30px;
+          color:black;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">WhoNo</div>
+        
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search videos..." onkeyup="searchVideos()">
+        </div>
+
+        <button id="openModalBtn">Upload</button>
+    </nav>
+
+    <div id="videoGrid" class="main-container">
+        </div>
+
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <h2>Upload Video</h2>
+            <hr style="border: 0.5px solid #444; margin-bottom: 20px;">
+            
+            <input type="text" id="videoTitle" class="modal-input" placeholder="Enter video title...">
+            <input type="file" id="videoInput" accept="video/*">
+            
+            <button class="upload-confirm-btn" onclick="processVideo()">Publish Video</button>
+        </div>
+    </div>
+    <div class="home">
+      <h1><a href="index.html">B</a></h1>
+    </div>
+<script>
+    const modal = document.getElementById("uploadModal");
+    const videoGrid = document.getElementById("videoGrid");
+    const videoInput = document.getElementById("videoInput");
+    const videoTitleInput = document.getElementById("videoTitle");
+    const searchBar = document.getElementById("searchBar");
+
+    // --- INDEXEDDB LOGIC ---
+    let db;
+    const request = indexedDB.open("WhoNoVideoDB", 1);
+
+    request.onupgradeneeded = (e) => {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains("videos")) {
+            db.createObjectStore("videos", { keyPath: "id", autoIncrement: true });
+        }
+    };
+
+    request.onsuccess = (e) => {
+        db = e.target.result;
+        loadVideosFromDB(); // Load saved videos as soon as DB is ready
+    };
+
+    // Function to load all videos from the browser database
+    function loadVideosFromDB() {
+        const transaction = db.transaction("videos", "readonly");
+        const store = transaction.objectStore("videos");
+        const getAllRequest = store.getAll();
+
+        getAllRequest.onsuccess = () => {
+            const videos = getAllRequest.result;
+            videoGrid.innerHTML = ""; // Clear grid
+            videos.reverse().forEach(videoData => {
+                createVideoCard(videoData.blob, videoData.title, videoData.type);
+            });
+        };
+    }
+
+    // Modal Controls
+    document.getElementById("openModalBtn").onclick = () => { modal.style.display = "block"; };
+    function closePopup() {
+        modal.style.display = "none";
+        videoInput.value = "";
+        videoTitleInput.value = "";
+    }
+    window.onclick = (event) => { if (event.target == modal) closePopup(); }
+
+    // Search Functionality
+    function searchVideos() {
+        const filter = searchBar.value.toLowerCase();
+        const cards = videoGrid.getElementsByClassName("video-card");
+        for (let i = 0; i < cards.length; i++) {
+            const title = cards[i].querySelector(".video-title").innerText;
+            cards[i].style.display = title.toLowerCase().includes(filter) ? "" : "none";
+        }
+    }
+
+    // Handle Video Processing
+    function processVideo() {
+        const file = videoInput.files[0];
+        const title = videoTitleInput.value.trim() || file.name;
+        
+        if (!file) {
+            alert("Please select a video file!");
+            return;
+        }
+
+        // SAVE TO INDEXEDDB
+        const transaction = db.transaction("videos", "readwrite");
+        const store = transaction.objectStore("videos");
+        const videoData = {
+            blob: file,
+            title: title,
+            type: file.type,
+            date: new Date().toLocaleDateString()
+        };
+
+        store.add(videoData).onsuccess = () => {
+            createVideoCard(file, title, file.type);
+            closePopup();
+        };
+    }
+
+    // Helper to create the UI card
+    function createVideoCard(fileBlob, title, type) {
+        const videoURL = URL.createObjectURL(fileBlob);
+        const card = document.createElement("div");
+        card.className = "video-card";
+        
+        card.innerHTML = `
+            <video controls>
+                <source src="${videoURL}" type="${type}">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-info">
+                <h3 class="video-title" style="margin: 0; font-size: 16px;">${title}</h3>
+                <p style="color: #aaa; font-size: 14px; margin: 5px 0 0;">Stored in Browser</p>
+            </div>
+        `;
+        videoGrid.prepend(card);
+    }
+</script>
+
+   
+</body>
+</html>

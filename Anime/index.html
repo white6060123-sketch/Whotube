@@ -1,0 +1,363 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <title>
+      WhoNo.com
+    </title>
+    <style>
+      *{
+        padding:0%;
+        box-sizing: border-box;
+      }
+      body{
+        background-image: url(images/red-anime-red-eyes-mp6gpfljn6e6uprq.jpg.webp);
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
+      .topnav a{
+        font-size: 20px;
+        padding: 9px 8px;
+        float:right;
+        text-decoration: none;
+        color:white;
+        text-shadow: 0 0 10px gray;
+        border-radius: 80px;
+        transition:300ms;
+        transition-timing-function: ease in out;
+      }
+      .topnav a:hover{
+        color:black;
+        text-decoration: underline;
+      }
+      .topnav button{
+        overflow: hidden;
+        position:relative;
+        bottom:-11px;
+        left:45%;
+        border:2px solid lightgreen;
+        border-radius: 4px;
+        background-color:lightgreen;
+        height: 3%;
+        width: 20%;
+        transition: 100ms;
+        transition-timing-function: ease in out;
+      }
+      .topnav button:hover{
+        height: 5%;
+      }
+      .topnav .active1{
+        color:lightgreen;
+        transition:300ms;
+        transition-timing-function: ease in out;
+      }
+      .topnav .active1:hover{
+        text-decoration:underline;
+        color:green;
+      }
+      h2{
+        color:white;
+        position:absolute;
+        top:-10px;
+        font-size:29px;
+      }
+      .cards{
+        overflow:hidden;
+        position:absolute;
+        top:40%;
+        right:1%;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        border:2px solid black;
+        border-radius:10px;
+        width:50%;
+        height: 60%;
+      }
+      .headbox{
+        position: absolute;
+        top:20%;
+        background-color: rgba(0,0,0,0.1);
+        border:2px solid black;
+        border-radius: 10px;
+        width:45%;
+        height:80%;
+      }
+      .headbox ul li img{
+        position:absolute;
+        left:45%;
+        bottom:12%;
+        border-radius: 20px;
+      }
+      
+      audio{
+        width:100%;
+        background-color: rgba(0,0,0,0.3);
+      }
+      .card1{ position:relative;
+        border:2px solid white;
+        border-radius: 10px;
+        height:100%;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url(images/anime-cute-girl.jpg);
+        background-attachment: absolute;
+        background-position:center ;
+        background-size: cover;
+        transition:300ms;
+        transition-timing-function: ease in out;
+      }
+      .card1:hover{
+        transform:scale(0.99);
+        border:2px solid gray;
+      }
+      .card2{
+        position:relative;
+        border:2px solid white;
+        border-radius: 10px;
+        height:100%;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url(images/anime-cute-girl-big-eyes-5qd9oe3d41lvi25p.jpg.webp);
+        background-attachment: absolute;
+        background-position:left ;
+        background-size: cover;
+        transition:300ms;
+        transition-timing-function: ease in out;
+      }
+      .card2:hover{
+        transform:scale(0.99);
+        border:2px solid gray;
+      }
+      .card3{
+        position:relative;
+        border:2px solid white;
+        border-radius: 10px;
+        height:100%;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url(images/anime-girl-s-laptop-workstation-illuminated-by-shadows-rhbmukqf68o1k29n.jpg.webp);
+        background-attachment: absolute;
+        background-position:center;
+        background-size: cover;
+        transition:300ms;
+        transition-timing-function: ease in out;
+      }
+      .card3:hover{
+        transform:scale(0.99);
+        border:2px solid gray;
+      }
+.card4{
+  position:relative;
+        border:2px solid white;
+        border-radius: 10px;
+        height:100%;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url(images/takt-op-destiny-wallpaper-da2df83wue86ag7u.jpg.webp);
+        background-attachment: absolute;
+        background-position:center ;
+        background-size: cover;
+        transition:300ms;
+        transition-timing-function: ease in out;
+      }
+       .card4:hover{
+        transform:scale(0.99);
+        border:2px solid gray;
+      }
+      .infobox{
+        position: absolute;
+        bottom:-24.1%;
+        left:0%;
+        border:2px solid black;
+        background-color:black;
+        color:white;
+        width:100%;
+      }
+      .imagech{
+        border:2px solid black;
+        background-color: rgba(0,0,0,0.5);
+        border-radius: 20px;
+        position: fixed;
+        top:8%;
+        right:-100%;
+        height: 18%;
+        width: 46%;
+        transition: right 0.5s;
+        z-index: 100;
+      }
+      .imagech button{
+        position:relative;
+        top:2%;
+        left:8%;
+        background-color: #7aff84e8;
+        padding:20px 10px;
+        border-radius:20px;
+      }
+      h3{
+        position:relative;
+        top:27.6%;
+        left:58%;
+        width:35%;
+        font-size:28px; 
+        color: darkgray;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        border:2px solid green;
+        border-radius:10px;
+        background-color:lightgreen;
+      }
+    </style>
+  </head>
+  <body>
+    <!---this is used to make top navigation--->
+    <div class="topnav">
+      <a class="active1" href="#info-section">Info</a>
+      <a href="Video.html">Video</a>
+      <button id="input-button">change image</button>
+      <h2>WhoNo<span style="color:lightgray;">|</span></h2>
+    </div>
+    <!---this used to make songs cards with scroll---->
+    <h3>songs</h3>
+    <div class="cards">
+      <div class="card1">
+        <ul style="position:absolute;
+        top:15%;font-family: 'Poppins', sans-serif;">
+          <li> creator: <span style="color:white;">the_fat_rat</span></li>
+          <li>song: <span style="color:white">monody_feat</span></li>
+        </ul>
+        <audio controls>
+          <source src="songs/Monody_feat._Laura_Brehm_-_The_Fat_Rat_(mp3.pm).mp3">
+        </audio>
+      </div>
+      <div class="card2">
+        <ul style="position:relative;
+        top:-10%;font-family: 'Poppins', sans-serif;">
+          <li> creator: <span style="color:yellow;">the_fat_rat</span></li>
+          <li>song: <span style="color:yellow">Rise_Up</span></li>
+          <br>
+        <audio controls>
+          <source src="songs/The_Fat_Rat_-_Rise_Up_(mp3.pm).mp3">
+        </audio>
+      </div>
+      <div class="card3">
+        <ul style="position:relative;
+        top:-10%;font-family: 'Poppins', sans-serif;">
+          <li> creator: <span style="color:brown;">the_fat_rat</span></li>
+          <li>song: <span style="color:brown;">Sail_Away</span></li>
+          <br>
+        <audio controls>
+          <source src="songs/The_Fat_Rat_-_Sail_Away_(mp3.pm).mp3">
+        </audio>
+      </div>
+      <div class="card4">
+        <ul style="position:relative;
+        top:-10%;font-family: 'Poppins', sans-serif;">
+          <li> creator: <span style="color:red;">V_J_x_Narvent</span></li>
+          <li>song: <span style="color:red">Memory_Reboot</span></li>
+          <br>
+        <audio controls>
+          <source src="songs/V_J_x_Narvent_-_Memory_Reboot_Slowed_(mp3.pm).mp3">
+        </audio>
+      </div>
+    </div>
+    <!---this is used to show main heading and some details--->
+    <div class="headbox">
+      <h1>Welcome</h1>
+      <p>The best entertainment<br>
+      by providing songs and <br>videos
+      i hope u enjoy but <br>due
+      to my less knowledge<br>some featurs may <br>
+      not work</p>
+      <br>
+      <h4>Contacts</h4>
+      <ul>
+        <li>Email: <font color="blue">amankeepgoing345@<br>gmail.com</font></li>
+        <h4>other</h4>
+        <li>youtube:<a href="https://youtube.com/@whono-9?si=KGkNtBHbJex6zh8V"><img src="images/1767199190590.jpg" height="20px"></a></li>
+      </ul>
+    </div>
+    <div class="infobox">
+      <h5 id="info-section">info</h5>
+      <ul>
+        <li>name: Aman</li>
+        <li>work: frontend devloper</li>
+        <li>published: 31/12/2025</li>
+        <li>location: haryana, kumdli, sonipat</li>
+      </ul>
+      <marquee><span style="color:red;">Sorry if my website looks wierd on the the pc becouse im new as a frontend devloper. :(</span></marquee>
+      <div class="imagech">
+        <button id="input1">image1</button>
+        <button id="input2">image2</button>
+        <br>
+        <button id="input3">image3</button>
+        <button id="input4">image4</button>
+      </div>
+    </div>
+    <script>
+    const imgbtn = document.getElementById('input-button');
+    const chImg1 = document.getElementById('input1');
+    const chImg2 = document.getElementById('input2');
+    const chImg3 = document.getElementById('input3');
+    const chImg4 = document.getElementById('input4');
+    const imagePanel = document.querySelector('.imagech');
+    const imageChange = document.querySelector('body');
+    const colorch = document.querySelector('.headbox');
+
+    // 1. FUNCTION TO APPLY THE IMAGE & SAVE IT
+    function applyAndSaveBackground(imageUrl, textColor) {
+        // Apply to UI
+        imageChange.style.backgroundImage = `url(${imageUrl})`;
+        colorch.style.color = textColor;
+        imagePanel.style.right = "-2000%";
+
+        // SAVE to Browser Memory (localStorage)
+        localStorage.setItem('userBackground', imageUrl);
+        localStorage.setItem('userTextColor', textColor);
+    }
+
+    // 2. CHECK MEMORY ON PAGE LOAD
+    window.onload = function() {
+        const savedBg = localStorage.getItem('userBackground');
+        const savedColor = localStorage.getItem('userTextColor');
+
+        if (savedBg) {
+            imageChange.style.backgroundImage = `url(${savedBg})`;
+            colorch.style.color = savedColor || "white";
+        }
+    };
+
+    // 3. UPDATED BUTTON CLICK FUNCTIONS
+    function backgroundImage1(){
+        applyAndSaveBackground('images/anime-girl-phone-t2ie729js06avjwt.jpg.webp', 'white');
+    }
+    function backgroundImage2(){
+        applyAndSaveBackground('images/red-anime-red-eyes-mp6gpfljn6e6uprq.jpg.webp', 'black');
+    }
+    function backgroundImage3(){
+        applyAndSaveBackground('images/sad-anime-phone-gteazlzm4cs605q6.jpg.webp', 'black');
+    }
+    function backgroundImage4(){
+        applyAndSaveBackground('images/anime-girl-phone-ykxyb8ct03alyt4f.jpg.webp', 'black');
+    }
+
+    function changeImage(){
+        imagePanel.style.right = "1%"; 
+    }
+
+    imgbtn.addEventListener('click', changeImage);
+    chImg1.addEventListener('click', backgroundImage1);
+    chImg2.addEventListener('click', backgroundImage2);
+    chImg3.addEventListener('click', backgroundImage3);
+    chImg4.addEventListener('click', backgroundImage4);
+</script>
+  </body>
+</html>
